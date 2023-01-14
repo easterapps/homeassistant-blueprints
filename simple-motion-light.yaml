@@ -1,0 +1,79 @@
+blueprint:
+  name: Simple Motion Light
+  description: "A simple smart room heating solution for home assistant.\n- Automatic switch off when windows are open\n- Away mode when you are away from home\n- Eco mode when nobody is in the room but you are at home\n- Comfort mode when someone is in the room and you are at home\n- Eco and Comfort temperatures for day and night"
+  domain: automation
+  source_url: https://github.com/easterapps/homeassistant-blueprints/blob/main/simple-motion-light.yaml
+  input:
+    lights:
+      name: "Lights"
+      description: "One or more light entities"
+      default: []
+      selector:
+        entity:
+          domain: light
+          multiple: true
+    motion_sensors:
+      name: "Motion sensors"
+      description: "One or more motion sensors entities"
+      default: []
+      selector:
+        entity:
+          domain: binary_sensor
+          multiple: true
+    motion_on_trigger_time:
+      name: Motion On Trigger Time
+      description: The time to wait after motion was detected.
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 3600
+          unit_of_measurement: seconds    
+    motion_off_trigger_time:
+      name: Motion Off Trigger Time
+      description: The time to wait after motion was not detected.
+      default: 180
+      selector:
+        number:
+          min: 0
+          max: 3600
+          unit_of_measurement: seconds     
+
+
+mode: restart
+max_exceeded: silent
+variables:
+  lights: !input lights
+  motion_sensors: !input motion_sensors
+  motion_on_trigger_time: !input motion_on_trigger_time
+  motion_off_trigger_time: !input motion_off_trigger_time
+
+trigger:
+  - platform: state
+    entity_id: !input motion_sensors
+    id: motion_on
+    from: "off"
+    to: "on"
+    for: !input motion_on_trigger_time
+  - platform: state
+    entity_id: !input motion_sensors
+    id: motion_off
+    from: "off"
+    to: "on"
+    for: !input motion_off_trigger_time
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: motion_on
+        sequence:
+          - type: turn_on
+            entity_id: !input lights
+            domain: light
+      - conditions:
+          - condition: trigger
+            id: motion_off
+        sequence:
+          - type: turn_off
+            entity_id: !input lights
+            domain: light
