@@ -5,13 +5,12 @@ blueprint:
   source_url: https://github.com/easterapps/homeassistant-blueprints/blob/main/simple-motion-light.yaml
   input:
     lights:
-      name: "Lights"
-      description: "One or more light entities"
-      default: []
+      name: Light
+      description: One or more light entities
       selector:
-        entity:
-          domain: light
-          multiple: true
+        target:
+          entity:
+            domain: light
     motion_sensors:
       name: "Motion sensors"
       description: "One or more motion sensors entities"
@@ -67,13 +66,13 @@ action:
           - condition: trigger
             id: motion_on
         sequence:
-          - type: turn_on
-            entity_id: '{{ expand(lights) | selectattr("entity_id", "!=", trigger.entity_id) | map(attribute="entity_id") | list }}'
-            domain: light
+          - alias: "Turn on the light"
+            service: light.turn_on
+            target: !input lights
       - conditions:
           - condition: trigger
             id: motion_off
         sequence:
-          - type: turn_off
-            entity_id: '{{ expand(lights) | selectattr("entity_id", "!=", trigger.entity_id) | map(attribute="entity_id") | list }}'
-            domain: light
+          - alias: "Turn off the light"
+            service: light.turn_off
+            target: !input lights
