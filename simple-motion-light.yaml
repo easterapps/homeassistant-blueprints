@@ -68,12 +68,12 @@ action:
             id: motion_on
         sequence:
           - type: turn_on
-            entity_id: !input lights
+            entity_id: '{{ expand(lights) | selectattr("entity_id", "!=", trigger.entity_id) | map(attribute="entity_id") | list }}'
             domain: light
       - conditions:
           - condition: trigger
             id: motion_off
         sequence:
           - type: turn_off
-            entity_id: !input lights
+            entity_id: '{{ expand(lights) | selectattr("entity_id", "!=", trigger.entity_id) | map(attribute="entity_id") | list }}'
             domain: light
