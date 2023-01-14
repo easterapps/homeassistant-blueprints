@@ -85,6 +85,15 @@ blueprint:
       selector:
         entity:
           domain: [binary_sensor, input_boolean]
+    window_open_trigger_time:
+      name: Window Open Trigger Time
+      description: The time to wait after window opened.
+      default: 5
+      selector:
+        number:
+          min: 0
+          max: 3600
+          unit_of_measurement: seconds     
     window_closed_trigger_time:
       name: Window Closed Trigger Time
       description: The time to wait after window closed.
@@ -124,6 +133,7 @@ variables:
   night_start_time: !input night_start_time
   window_contact: !input window_contact
   window_closed_trigger_time: !input window_closed_trigger_time
+  window_open_trigger_time: !input window_open_trigger_time
 
 trigger:
   - platform: state
@@ -132,6 +142,7 @@ trigger:
     entity_id: !input window_contact
     from: "off"
     to: "on"
+    for: !input window_open_trigger_time
   - platform: state
     entity_id: !input window_contact
     to: "off"
