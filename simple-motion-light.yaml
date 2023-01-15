@@ -57,8 +57,8 @@ trigger:
   - platform: state
     entity_id: !input motion_sensors
     id: motion_off
-    from: "off"
-    to: "on"
+    from: "on"
+    to: "off"
     for: !input motion_off_trigger_time
 action:
   - choose:
