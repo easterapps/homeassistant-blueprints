@@ -199,6 +199,7 @@ action:
                       - service: climate.set_temperature
                         data:
                           temperature: !input comfort_mode_day_temperature
+                          hvac_mode: heat
                         target:
                           entity_id: !input climate_entity
                   - conditions:
@@ -209,6 +210,7 @@ action:
                       - service: climate.set_temperature
                         data:
                           temperature: !input comfort_mode_night_temperature
+                          hvac_mode: heat
                         target:
                           entity_id: !input climate_entity
           - conditions:
@@ -228,6 +230,7 @@ action:
                       - service: climate.set_temperature
                         data:
                           temperature: !input eco_mode_day_temperature
+                          hvac_mode: heat
                         target:
                           entity_id: !input climate_entity
                   - conditions:
@@ -238,5 +241,6 @@ action:
                       - service: climate.set_temperature
                         data:
                           temperature: !input eco_mode_night_temperature
+                          hvac_mode: heat
                         target:
                           entity_id: !input climate_entity
