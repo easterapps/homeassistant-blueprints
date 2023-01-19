@@ -3,7 +3,7 @@
 # connected through Deconz.
 
 blueprint:
-  source_url: 
+  source_url: https://github.com/easterapps/homeassistant-blueprints/blob/feature_deconz_tradfri_remote/deconz_tradfri_remote.yaml
 
   name: deCONZ - IKEA TRADFRI - 5 Button Remote - Custom Actions
 
