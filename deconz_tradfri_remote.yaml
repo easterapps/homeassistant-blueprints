@@ -1,164 +1,106 @@
-
-
 blueprint:
-  
-
-  name: deCONZ - IKEA TRADFRI - 5 Button Remote - Custom Actions
-
-  description: >-
-    This automation simulates the use of the IKEA TRADFRI remote control
-    connected through ZHA.
+  name: deCONZ - IKEA five button remote
+  description: Tradfri 5 Button Remote Bluetprint
   domain: automation
-  source_url: https://github.com/niro1987/homeassistant-config/blob/main/blueprints/automation/niro1987/zha_ikea_tradfri_5button_remote_custom.yaml
-
   input:
     remote:
-      name: IKEA TRADFRI remote control
-      description: Select the remote control you wish to use.
+      name: Remote
+      description: IKEA remote to use
       selector:
         device:
-          integration: deCONZ
+          integration: deconz
           manufacturer: IKEA of Sweden
           model: TRADFRI remote control
-    power_short:
-      name: Short Press - Power Button
-      description: The action to perform on Short Press of the Power Button
-      selector:
-        action:
+    button_middle_short:
+      name: Middle button - short press
+      description: Action to run on short middle button press
       default: []
-    dimup_short:
-      name: Short Press - Dim Up Button
-      description: The action to perform on Short Press of the Dim Up Button
       selector:
-        action:
+        action: {}
+    button_top_short:
+      name: Top button - short press
+      description: Action to run on short top button press
       default: []
-    dimdown_short:
-      name: Short Press - Dim Down Button
-      description: The action to perform on Short Press of the Dim Down Button
       selector:
-        action:
+        action: {}
+    button_top_long:
+      name: Top button - long press
+      description: Action to run on long top button press
       default: []
-    colorup_short:
-      name: Short Press - Color Up Button
-      description: The action to perform on Short Press of the Color Up Button
       selector:
-        action:
+        action: {}
+    button_bottom_short:
+      name: Buttom button - short press
+      description: Action to run on short bottom button press
       default: []
-    colordown_short:
-      name: Short Press - Color Down Button
-      description: The action to perform on Short Press of the Color Down Button
       selector:
-        action:
+        action: {}
+    button_bottom_long:
+      name: Bottom button - long press
+      description: Action to run on long bottm button press
       default: []
-    power_long:
-      name: Long Press - Power Button
-      description: The action to perform on Long Press of the Power Button
       selector:
-        action:
+        action: {}
+    button_left_short:
+      name: Left button - short press
+      description: Action to run on short left button press
       default: []
-    dimup_long:
-      name: Long Press - Dim Up Button
-      description: The action to perform on Long Press of the Dim Up Button
       selector:
-        action:
+        action: {}
+    button_left_long:
+      name: Left button - long press
+      description: Action to run on long left button press
       default: []
-    dimdown_long:
-      name: Long Press - Dim Down Button
-      description: The action to perform on Long Press of the Dim Down Button
       selector:
-        action:
+        action: {}
+    button_right_short:
+      name: Right button - short press
+      description: Action to run on short right button press
       default: []
-    colorup_long:
-      name: Long Press - Color Up Button
-      description: The action to perform on Long Press of the Color Up Button
       selector:
-        action:
+        action: {}
+    button_right_long:
+      name: Right button - long press
+      description: Action to run on long right button press
       default: []
-    colordown_long:
-      name: Long Press - Color Down Button
-      description: The action to perform on Long Press of the Color Down Button
       selector:
-        action:
-      default: []
-
+        action: {}
+  source_url: https://community.home-assistant.io/t/deconz-ikea-five-button-remote-for-lights/255403
 mode: restart
 max_exceeded: silent
-
 trigger:
-  - platform: event
-    event_type: zha_event
-    event_data:
-      device_id: !input remote
-
+- platform: event
+  event_type: deconz_event
+  event_data:
+    device_id: !input 'remote'
 action:
-  - choose:
-      # Short-Press on the power button.
-      - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "toggle" }}'
-        sequence: !input power_short
-
-      # Long-Press on the power button.
-      - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "move_to_level_with_on_off" }}'
-        sequence: !input power_long
-
-      # Short-Press on the dim-up button.
-      - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "step_with_on_off" }}'
-        sequence: !input dimup_short
-
-      # Long-Press on the dim-up button.
-      - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "move_with_on_off" }}'
-        sequence: !input dimup_long
-
-      # Short-Press on the dim-down button.
-      - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "step" }}'
-        sequence: !input dimdown_short
-
-      # Long-Press on the dim-down button.
-      - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "move" }}'
-        sequence: !input dimdown_long
-
-      # Short-Press on the color-up button.
-      - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "press" }}'
-          - condition: template
-            value_template: "{{ trigger.event.data.args == [256,13,0] }}"
-        sequence: !input colorup_short
-
-      # Long-Press on the color-up button.
-      - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "hold" }}'
-          - condition: template
-            value_template: "{{ trigger.event.data.args == [3328,0] }}"
-        sequence: !input colorup_long
-
-      # Short-Press on the color-down button.
-      - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "press" }}'
-          - condition: template
-            value_template: "{{ trigger.event.data.args == [257,13,0] }}"
-        sequence: !input colordown_short
-
-      # Long-Press on the color-down button.
-      - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "hold" }}'
-          - condition: template
-            value_template: "{{ trigger.event.data.args == [3329,0] }}"
-        sequence: !input colordown_long
-
-    # Any other event will cancel the repeat loops.
-    default: []
+- variables:
+    event: '{{ trigger.event.data.event }}'
+- choose:
+  - conditions:
+    - '{{ event == 1002 }}'
+    sequence: !input 'button_middle_short'
+  - conditions:
+    - '{{ event == 2002 }}'
+    sequence: !input 'button_top_short'
+  - conditions:
+    - '{{ event == 2001 }}'
+    sequence: !input 'button_top_long'
+  - conditions:
+    - '{{ event == 3002 }}'
+    sequence: !input 'button_bottom_short'
+  - conditions:
+    - '{{ event == 3001 }}'
+    sequence: !input 'button_bottom_long'
+  - conditions:
+    - '{{ event == 4002 }}'
+    sequence: !input 'button_left_short'
+  - conditions:
+    - '{{ event == 4001 }}'
+    sequence: !input 'button_left_long'
+  - conditions:
+    - '{{ event == 5002 }}'
+    sequence: !input 'button_right_short'
+  - conditions:
+    - '{{ event == 5001 }}'
+    sequence: !input 'button_right_long'
