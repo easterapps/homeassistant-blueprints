@@ -3,15 +3,15 @@
 # connected through Deconz.
 
 blueprint:
-  source_url: "https://github.com/easterapps/homeassistant-blueprints/blob/feature_deconz_tradfri_remote/deconz_tradfri_remote.yaml"
+  
 
   name: deCONZ - IKEA TRADFRI - 5 Button Remote - Custom Actions
 
   description: >-
     This automation simulates the use of the IKEA TRADFRI remote control
     connected through ZHA.
-
   domain: automation
+  source_url: https://github.com/easterapps/homeassistant-blueprints/blob/main/simple-smart-heating.yaml
 
   input:
     remote:
