@@ -1,5 +1,5 @@
 blueprint:
-  name: Simple Smart Heating
+  name: Simple Smart Heating v1.0.1
   description: "A simple smart room heating solution for home assistant.\n- Automatic switch off when windows are open\n- Away mode when you are away from home\n- Eco mode when nobody is in the room but you are at home\n- Comfort mode when someone is in the room and you are at home\n- Eco and Comfort temperatures for day and night"
   domain: automation
   source_url: https://github.com/easterapps/homeassistant-blueprints/blob/main/simple-smart-heating.yaml
@@ -138,6 +138,13 @@ variables:
 trigger:
   - platform: state
     entity_id: !input presence_at_home
+    from: "off"
+    to: "on"
+  - platform: state
+    entity_id: !input presence_at_home
+    from: "on"
+    to: "off"
+    for: !input away_mode_trigger_time
   - platform: state
     entity_id: !input window_contact
     from: "off"
